@@ -164,3 +164,156 @@ num_non_smokers = count(smoker_statuses)
 print("{} of {} are non-smokers.".format(num_non_smokers, total_persons))
 1064 of 1338 are non-smokers.
  
+#calculate the proportion of smokers and non-smokers
+print('About {}% of patients in this dataset are smokers'.format(round((num_smokers/total_persons) * 100), 2))
+print('About {}% of patients in this dataset are non-smokers'.format(round((num_non_smokers/total_persons) * 100), 2))
+About 20% of patients in this dataset are smokers
+About 80% of patients in this dataset are non-smokers
+
+#create a table showing all the attributes as columns
+medical_df = pd.read_csv('insurance.csv')
+print(medical_df)
+      age     sex     bmi  children smoker     region      charges
+0      19  female  27.900         0    yes  southwest  16884.92400
+1      18    male  33.770         1     no  southeast   1725.55230
+2      28    male  33.000         3     no  southeast   4449.46200
+3      33    male  22.705         0     no  northwest  21984.47061
+4      32    male  28.880         0     no  northwest   3866.85520
+...   ...     ...     ...       ...    ...        ...          ...
+1333   50    male  30.970         3     no  northwest  10600.54830
+1334   18  female  31.920         0     no  northeast   2205.98080
+1335   18  female  36.850         0     no  southeast   1629.83350
+1336   21  female  25.800         0     no  southwest   2007.94500
+1337   61  female  29.070         0    yes  northwest  29141.36030
+
+[1338 rows x 7 columns]
+
+#create a separate file for patients who are smokers
+smokers_patients = medical_df[(medical_df.smoker == 'yes')]
+print(smokers_patients)
+      age     sex     bmi  children smoker     region      charges
+0      19  female  27.900         0    yes  southwest  16884.92400
+11     62  female  26.290         0    yes  southeast  27808.72510
+14     27    male  42.130         0    yes  southeast  39611.75770
+19     30    male  35.300         0    yes  southwest  36837.46700
+23     34  female  31.920         1    yes  northeast  37701.87680
+...   ...     ...     ...       ...    ...        ...          ...
+1313   19  female  34.700         2    yes  southwest  36397.57600
+1314   30  female  23.655         3    yes  northwest  18765.87545
+1321   62    male  26.695         0    yes  northeast  28101.33305
+1323   42  female  40.370         2    yes  southeast  43896.37630
+1337   61  female  29.070         0    yes  northwest  29141.36030
+
+[274 rows x 7 columns]
+
+#create a separate file for patients who are non-smokers
+non_smokers_patients = medical_df[(medical_df.smoker == 'no')]
+print(non_smokers_patients)
+      age     sex     bmi  children smoker     region      charges
+1      18    male  33.770         1     no  southeast   1725.55230
+2      28    male  33.000         3     no  southeast   4449.46200
+3      33    male  22.705         0     no  northwest  21984.47061
+4      32    male  28.880         0     no  northwest   3866.85520
+5      31  female  25.740         0     no  southeast   3756.62160
+...   ...     ...     ...       ...    ...        ...          ...
+1332   52  female  44.700         3     no  southwest  11411.68500
+1333   50    male  30.970         3     no  northwest  10600.54830
+1334   18  female  31.920         0     no  northeast   2205.98080
+1335   18  female  36.850         0     no  southeast   1629.83350
+1336   21  female  25.800         0     no  southwest   2007.94500
+
+[1064 rows x 7 columns]
+
+#calculate min, max, and range of patients' ages
+max_age = medical_df.age.max()
+print("The oldest patient is {} years old".format(max_age))
+min_age = medical_df.age.min()
+print("The youngest patient is {} years old".format(min_age))
+range_age = max_age - min_age
+print("Range of ages of patients in this dataset: {} years".format(range_age))
+The oldest patient is 64 years old
+The youngest patient is 18 years old
+Range of ages of patients in this dataset: 46 years
+
+#calculate min, max, and range of patients' charges
+max_charge = medical_df.charges.max()
+print("The highest amount charged to at least one patient in this dataset is approximately ${}".format(round(max_charge, 2)))
+min_charge = medical_df.charges.min()
+print("The lowest amount charged to at least one patient in this dataset is approximately ${}".format(round(min_charge, 2)))
+range_charge = max_charge - min_charge
+print("Range of insurance charges is approximately ${}".format(round(range_charge, 2)))
+The highest amount charged to at least one patient in this dataset is approximately $63770.43
+The lowest amount charged to at least one patient in this dataset is approximately $1121.87
+Range of insurance charges is approximately $62648.55
+
+#print out and inspect data of high-paying patients
+high_paying_patients = medical_df[medical_df.charges > 50000]
+print(high_paying_patients)
+      age     sex     bmi  children smoker     region      charges
+34     28    male  36.400         1    yes  southwest  51194.55914
+543    54  female  47.410         0    yes  southeast  63770.42801
+577    31  female  38.095         1    yes  northeast  58571.07448
+819    33  female  35.530         0    yes  northwest  55135.40209
+1146   60    male  32.800         0    yes  southwest  52590.82939
+1230   52    male  34.485         3    yes  northwest  60021.39897
+1300   45    male  30.360         0    yes  southeast  62592.87309
+
+#visualize how different attributes may or may not have been influential towards the insurance charge
+#smoker(yes or no)
+sns.boxplot(data = medical_df, x = 'smoker', y = 'charges')
+plt.show()
+
+#number of children
+plt.scatter(x = medical_df.children, y = medical_df.charges)
+plt.xlabel('Number of Children')
+plt.ylabel('Insurance Charge ($)')
+plt.show()
+
+#age
+plt.scatter(x = medical_df.age, y = medical_df.charges)
+plt.xlabel('Age (Years)')
+plt.ylabel('Insurance Charge ($)')
+plt.show()
+
+#BMI
+plt.scatter(x = medical_df.bmi, y = medical_df.charges)
+plt.xlabel('BMI')
+plt.ylabel('Insurance Charge ($)')
+plt.show()
+
+#region
+sns.boxplot(data = medical_df, x = 'region', y = 'charges')
+plt.show()
+
+#sex
+sns.boxplot(data = medical_df, x = 'sex', y = 'charges')
+plt.show()
+
+#calculate pearson correlation to check the strength of the linear relationship between insurance charges and the other quantitative variables(number of children , age, and bmi)
+#number of children
+corr_children_charges, p = pearsonr(medical_df.children, medical_df.charges)
+print("The correlation coefficient of {} indicates no linear association between the number of children a patient has and the insurance payment charged to them.".format(round(corr_children_charges, 1)))
+
+#age
+corr_age_charges, p = pearsonr(medical_df.age, medical_df.charges)
+print("The correlation coefficient of {} indicates a linear association between a patient's age and the insurance payment charged to them.".format(round(corr_age_charges, 1)))
+
+#BMI
+corr_bmi_charges, p = pearsonr(medical_df.bmi, medical_df.charges)
+print("The correlation coefficient of {} indicates a linear association between a patient's BMI and the insurance payment charged to them.".format(round(corr_bmi_charges, 1)))
+
+The correlation coefficient of 0.1 indicates no linear association between the number of children a patient has and the insurance payment charged to them.
+The correlation coefficient of 0.3 indicates a linear association between a patient's age and the insurance payment charged to them.
+The correlation coefficient of 0.2 indicates a linear association between a patient's BMI and the insurance payment charged to them.
+
+
+#FINDINGS
+1. The insurance.csv dataset contains the data(seven attributes) of 1338 persons
+2. The mean and median age of the patients are both 39 years. The oldest patient is 64 years old while the youngest is 18years old, putting the range at 46years. The scatter plot of charges vs age indicates a linear association between a patient's age and their insurance charge. The higher the age, the higher the insurance charge.
+3. The mean and median BMI of the patients are 30.663 and 30.4 respectively. The scatter plot of charges vs BMI indicates a linear association between a patient's BMI and their insurance charge. The higher the BMI, the higher the insurance charge.
+4. The average Insurance charge is $13,270.42 while the median insurance charge is $17,390.7275. The highest amount charged to at least one patient is approximately $63770.43 while the lowest amount charged to at least one patient is approximately $1121.87
+5. About 20% of the patients are smokers. The side by side boxplot of charges vs smoker showing no overlap between the boxes, indicates that the smoker status of a patient is influential towards their insurance charge. 
+6. All the patients are from either of the four regions: southwest, southeast, northwest, and northeast. An overlap in the boxes on the side by side boxplot of charges vs region indicates that location had no impact on insurance charge.
+
+#Note:
+patients and persons are used interchangeably in this analysis
