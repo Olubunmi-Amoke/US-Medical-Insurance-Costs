@@ -1,4 +1,6 @@
 # US-Medical-Insurance-Costs
+Disclaimer: Data was obtained from Codecademy website
+
 ##SCOPE
 1. Load and inspect data
 2. Aggregate data - calculate mean, median 
