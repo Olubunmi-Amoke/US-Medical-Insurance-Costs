@@ -18,3 +18,6 @@ Disclaimer: Data was obtained from Codecademy website
 
 #Note:
 patients and persons are used interchangeably in this analysis
+
+#ADDED
+Created a system that makes it easier to organize & update patient data, and calculate patient's potential medical fees using python classes/methods
